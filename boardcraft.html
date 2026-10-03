@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BOARDCRAFT · Class X</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&display=swap">
+<style>
+:root{--bg:#eef1f5;--card:#fff;--tx:#101a2e;--mu:#5d6a80;--ac:#0e7c86;--ac2:#e8f4f5;--bd:#dde3ec;--ok:#15803d;--wn:#b45309;--r:14px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1220;--card:#141c2e;--tx:#e8edf6;--mu:#93a0b8;--ac:#35b6c0;--ac2:#10303a;--bd:#25314a;--ok:#4ade80;--wn:#fbbf24}}
+:root[data-theme="dark"]{--bg:#0c1220;--card:#141c2e;--tx:#e8edf6;--mu:#93a0b8;--ac:#35b6c0;--ac2:#10303a;--bd:#25314a;--ok:#4ade80;--wn:#fbbf24}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 .4em;line-height:1.15}
+h1{font-size:1.7rem}h2{font-size:1.15rem}h3{font-size:1rem}
+main{max-width:920px;margin:0 auto;padding:16px 14px 96px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:2px;overflow-x:auto;background:var(--card);border-top:1px solid var(--bd);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:0 0 auto;min-width:64px;min-height:48px;border:0;background:none;color:var(--mu);border-radius:10px;font:inherit;font-size:.72rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button span{font-size:1.15rem}
+nav button.on{background:var(--ac2);color:var(--ac);font-weight:600}
+@media(min-width:900px){nav{top:0;bottom:auto;right:auto;width:150px;flex-direction:column;border-top:0;border-right:1px solid var(--bd);padding-top:20px}nav button{flex-direction:row;gap:8px;font-size:.9rem;padding:0 10px;min-height:42px}main{margin-left:170px;max-width:none;padding-right:30px}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid .card{margin:0}
+.mu{color:var(--mu);font-size:.85rem}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp{justify-content:space-between}
+button.b,.chip{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;cursor:pointer}
+button.p{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600}
+[data-theme="dark"] button.p{color:#06242a}
+.chip{min-height:38px;padding:0 12px;font-size:.85rem}.chip.on{background:var(--ac2);border-color:var(--ac);color:var(--ac);font-weight:600}
+input,select,textarea{width:100%;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+textarea{min-height:110px;font:13px/1.45 ui-monospace,Consolas,monospace}
+label{display:block;font-size:.8rem;color:var(--mu);margin:8px 0 3px}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.bar{height:8px;border-radius:8px;background:var(--bd);overflow:hidden}.bar i{display:block;height:100%;background:var(--ac);border-radius:8px;transition:width .4s}
+.item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)}.item:last-child{border:0}
+.item input[type=checkbox]{width:22px;min-height:22px;height:22px;flex:none}
+.done .t{text-decoration:line-through;color:var(--mu)}
+.pri{font-size:.7rem;padding:2px 8px;border-radius:20px;background:var(--ac2);color:var(--ac)}.pri.p1{background:#fde8d8;color:#9a3412}
+.note{border-left:4px solid var(--wn);background:var(--card);padding:12px 14px;border-radius:0 var(--r) var(--r) 0;margin-bottom:14px;border:1px solid var(--bd);border-left:4px solid var(--wn)}
+.tl{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.tl div{padding:8px 6px;border-radius:10px;background:var(--bg);font-size:.72rem;text-align:center;border:1px solid var(--bd)}.tl .on{background:var(--ac);color:#fff;border-color:var(--ac)}
+[data-theme="dark"] .tl .on{color:#06242a}
+.big{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:2.6rem;font-variant-numeric:tabular-nums}
+iframe{width:100%;height:260px;border:1px solid var(--bd);border-radius:10px;background:#fff}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:9;opacity:0;pointer-events:none;transition:opacity .2s}#toast.on{opacity:1}
+.card{transition:transform .2s,box-shadow .2s}
+@media(hover:hover){.grid .card:hover{transform:translateY(-3px);box-shadow:0 12px 26px -14px rgba(16,26,46,.4)}button.b:hover{border-color:var(--ac)}}
+button{transition:transform .12s,background .2s,border-color .2s}button:active{transform:scale(.96)}
+.hero{background:linear-gradient(135deg,#0e7c86,#2a4fd6);color:#fff;border:0;box-shadow:0 14px 30px -16px rgba(42,79,214,.7)}.hero h2{opacity:.85;font-size:.95rem}
+.item{transition:opacity .25s}.item.done{opacity:.65}
+@keyframes up{from{opacity:0;transform:translateY(8px)}}
+@keyframes ri{from{stroke-dasharray:0 100}}
+@keyframes bi{from{transform:scaleX(0)}}
+.pg>*{animation:up .4s cubic-bezier(.2,.7,.3,1) both}
+.pg>*:nth-child(2){animation-delay:.05s}.pg>*:nth-child(3){animation-delay:.1s}.pg>*:nth-child(4){animation-delay:.15s}.pg>*:nth-child(5){animation-delay:.2s}.pg>*:nth-child(n+6){animation-delay:.25s}
+.pg .rg{animation:ri 1s .2s cubic-bezier(.2,.7,.3,1) both}
+.pg .bar i{transform-origin:left;animation:bi .8s .15s cubic-bezier(.2,.7,.3,1) both}
+nav button{transition:background .2s,color .2s}
+#toast{transform:translate(-50%,12px);transition:opacity .25s,transform .25s}#toast.on{transform:translate(-50%,0)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+button,input,select,label,a,nav button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+nav{scroll-behavior:smooth;overscroll-behavior-x:contain;scroll-snap-type:x proximity}nav button{scroll-snap-align:center}
+.item .t{transition:color .25s}
+.pg>*{will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<nav id="nav" aria-label="Main"></nav>
+<main id="v" tabindex="-1"></main>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+/* ===== BOARDCRAFT: data layer ===== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Date().toLocaleDateString('en-CA');
+const addDays=(d,n)=>{const x=new Date(d+'T00:00');x.setDate(x.getDate()+n);return x.toLocaleDateString('en-CA')};
+const sp=s=>s.split('|');
+const fmt=t=>{const[h,m]=t.split(':').map(Number);return(h%12||12)+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM')};
+const ST=['Not started','Learning','Practiced','Revised','Mastered'];
+const CH={Maths:sp('Real Numbers|Polynomials|Pair of Linear Equations|Quadratic Equations|Arithmetic Progressions|Triangles|Coordinate Geometry|Intro to Trigonometry|Applications of Trigonometry|Circles|Areas Related to Circles|Surface Areas & Volumes|Statistics|Probability'),
+Science:sp('Chemical Reactions|Acids, Bases & Salts|Metals & Non-metals|Carbon Compounds|Periodic Classification|Life Processes|Control & Coordination|Reproduction|Heredity|Our Environment|Light|Human Eye|Electricity|Magnetic Effects'),
+SST:sp('Nationalism in Europe|Nationalism in India|Global World|Print Culture|Industrialisation|Resources & Development|Forest & Wildlife|Water Resources|Agriculture|Minerals & Energy|Manufacturing Industries|Lifelines of Economy|Power Sharing|Federalism|Gender, Religion & Caste|Political Parties|Outcomes of Democracy|Development|Sectors of Economy|Money & Credit|Globalisation|Consumer Rights'),
+English:sp('Literature|Grammar|Reading|Writing'),Hindi:sp('Literature|Grammar|Reading|Writing')};
+const DAYS=[['What is HTML + first file','Create index.html and show "Hello" in the browser'],['Headings + paragraphs','Write your name as h1 and 3 lines about you as p'],['Text formatting','Use bold, italic and line breaks in your intro'],['Links','Add a link to a site you like'],['Images','Show one image with alt text'],['Lists','Make a list of your 5 subjects'],['Student Profile project','Combine Days 2–6 into one profile page'],['Tables','Build a weekly timetable table'],['Forms','Make a form with name and email'],['Inputs','Try text, number, date and checkbox inputs'],['Buttons + labels','Connect every input to a label'],['Semantic HTML','Rebuild the profile with header/main/footer'],['Accessibility','Check alt text, labels and heading order'],['Study Timetable project','Finish a timetable page in HTML'],['CSS introduction','Link a style.css and change one colour'],['Selectors + colors','Style by tag, class and id'],['Fonts + text','Change font, size and spacing'],['Box model','Draw the box model for one element'],['Margin + padding','Space out your profile cards'],['Width + height + units','Compare px, %, rem and vw'],['Student Profile CSS project','Style the profile page fully'],['Display','Try block, inline and none'],['Flexbox','Centre a card and make a row'],['Flexbox practice','Build a navigation bar'],['CSS Grid','Make a 3-column card grid'],['Grid practice','Build a simple dashboard layout'],['Positioning','Make a sticky header'],['Responsive design','Make the layout fit a phone'],['Media queries','Change columns under 600px'],['Responsive Study Dashboard','Finish the Level 2 project']];
+const GL={HTML:'The language that gives a web page its structure: headings, paragraphs, images, links.',CSS:'The language that styles a page: colours, fonts, spacing and layout.',JavaScript:'The language that makes a page react: clicks, calculations, saving data.',DOM:'The browser\'s live tree of your page. JavaScript changes the page by changing the DOM.',API:'A way for one program to ask another for data, such as weather from a weather service.',localStorage:'A small box inside your browser where a page can save text. It stays after you close the tab.',Git:'A tool that saves snapshots of your code so you can go back if something breaks.',GitHub:'A website that stores Git projects online so you can back up and share them.'};
+const FIT={Beginner:['5 min warm-up (arm circles, marching)','15 min bodyweight: wall push-ups, squats, plank 3×20s','10 min brisk walk or light skipping','5 min mobility','5 min cool-down + water'],Normal:['5 min warm-up','20 min bodyweight: push-ups, squats, lunges, plank','10 min jog or outdoor game','5 min mobility','5 min cool-down'],Easy:['10 min easy walk outdoors','10 min gentle stretching','5 min slow breathing','Stop early if tired. Rest counts.']};
+const MOT=['Consistency beats intensity.','Small progress is still progress.','Learn it. Practice it. Test it. Fix it.','Finish today\'s priorities before chasing tomorrow.','Practice makes concepts automatic.'];
+const PH=[['Phase 1','Oct 2–31','Syllabus + concepts'],['Phase 2','Nov','Pre-Board 1'],['Phase 3','Dec','Pre-Board 2'],['Phase 4','Jan','PYQs + mocks'],['Phase 5','Feb','Final revision']];
+const OFF=[1,3,7,14];
+const FW=['Easy recovery / walk / stretching','Strength','Cardio + mobility','Strength','Light cardio + mobility','Strength','Sport / walk + mobility'];
+const B7=['Day −7: Complete syllabus checklist','Day −6: NCERT + important questions','Day −5: PYQs','Day −4: Full timed paper','Day −3: Paper analysis + weak chapters','Day −2: Formulas, definitions, maps, writing formats','Day −1: Light revision + proper sleep'];
+const PG=['Maths + Science foundation and major syllabus completion.','Pre-Board 1 preparation. In the last 7–10 days, switch to the school date sheet.','Fix Pre-Board 1 mistakes permanently, then prepare for Pre-Board 2.','95%+ phase: PYQs, sample papers, mistake elimination.','Boards: the nearest paper gets 70–80% of academic time.'];
+const dExam=()=>S.exam?Math.round((new Date(S.exam+'T00:00')-new Date(today()+'T00:00'))/864e5):null;
+const dayPlan=()=>{const n=dExam();if(n===0)return['Exam day: only formulas, definitions, diagrams, maps, keywords. No new topic.'];if(n>0&&n<=7)return[B7[7-n]];return PL[today().slice(5)]||[]};
+const MT=['Notes','PDF','Image','Question paper','PYQ','Formula sheet','Revision sheet','Code','Project'];
+const PL={};`10-03|Maths: Real Numbers FTA + irrationality|SST: Nationalism in Europe 1
+10-04|Science: Chemical Reactions 1|English: A Letter to God + Dust of Snow
+10-05|Maths: Real Numbers NCERT|SST: Nationalism in Europe 2
+10-06|Science: Chemical Reactions NCERT|English: Nelson Mandela
+10-07|Maths: Real Numbers PYQs|Hindi: Sparsh lesson 1 + grammar
+10-08|Science: Acids, Bases & Salts 1|SST: Nationalism in India 1
+10-09|Maths: Polynomials 1|Hindi: writing + grammar
+10-10|Maths: Polynomials 2 + NCERT|SST: Nationalism in India 2 + map
+10-11|TEST: Maths Real Numbers + Polynomials (60–90 min, then 30 min analysis)|English: Stories About Flying + poems
+10-12|Maths: Pair of Linear Equations 1|SST: Resources & Development
+10-13|Science: Acids, Bases & Salts 2|English: Diary of Anne Frank
+10-14|Maths: Linear Equations 2|Hindi: next Sparsh lesson
+10-15|Science: Metals & Non-metals 1|SST: Forest & Wildlife
+10-16|Maths: Linear Equations NCERT|Hindi: grammar + writing
+10-17|Science: Metals & Non-metals 2 + NCERT|SST: Resources + Forest revision
+10-18|TEST: Science Chemistry|English: Glimpses of India + poems
+10-19|Maths: Quadratic Equations 1|SST: Water Resources
+10-20|Science: Carbon Compounds 1|English: Mijbil the Otter
+10-21|Maths: Quadratic Equations 2|Hindi: literature + grammar
+10-22|Science: Carbon 2 + NCERT|SST: Agriculture
+10-23|Maths: Quadratic NCERT + PYQs|Hindi: formal writing
+10-24|Maths: Quadratic timed test|SST: Water + Agriculture questions
+10-25|TEST: Science Carbon + analysis|English: Madam Rides the Bus
+10-26|Maths: AP 1|SST: Minerals & Energy
+10-27|Science: Life Processes Nutrition + Respiration|English: Sermon at Benares
+10-28|Maths: AP 2 + NCERT|Hindi: literature + grammar
+10-29|Science: Life Processes Transport + Excretion|SST: Manufacturing Industries
+10-30|Maths: AP PYQs|Hindi: writing + grammar
+10-31|TEST: October Maths cumulative|TEST: Science + SST mini test
+11-01|Maths: Coordinate Geometry|English: The Proposal
+11-02|Science: Control & Coordination|SST: Power Sharing
+11-03|Maths: Coordinate Geometry PYQs|Hindi literature
+11-04|Science: Control & Coordination|English: A Triumph of Surgery
+11-05|Maths: Triangles 1|SST: Federalism
+11-06|Science: How do Organisms Reproduce?|Hindi grammar
+11-07|TEST: Maths + Science chapter test|SST: Gender, Religion & Caste
+11-08|Maths: Triangles 2|English: The Thief's Story
+11-09|Science: Reproduction NCERT|SST: Political Parties
+11-10|Maths: Triangles PYQs|Hindi literature
+11-11|Science: Light 1|English: The Midnight Visitor
+11-12|Maths: Circles|SST: Outcomes of Democracy
+11-13|Science: Light 2|Hindi writing
+11-14|TEST: Full Maths|SST: Political Science revision
+11-15|TEST: Science full|English writing + grammar
+11-16|Maths: Trigonometry 1|Economics: Development
+11-17|Science: Human Eye|Hindi literature
+11-18|Maths: Trigonometry 2|Economics: Sectors
+11-19|Science: Electricity 1|English: A Question of Trust
+11-20|Maths: Trigonometry PYQs|Hindi grammar
+11-21|TEST: SST full|Mistake analysis
+11-22|Maths full revision + PYQs (switch to the real Pre-Board date sheet)
+11-23|Science full revision
+11-24|SST History + Geography
+11-25|English full practice
+11-26|Hindi full practice
+11-27|Maths timed paper
+11-28|Science timed paper
+11-29|SST timed paper
+11-30|Pre-Board 1 result / error analysis
+12-01|Maths: Areas Related to Circles
+12-02|Science: Electricity
+12-03|SST: Money & Credit
+12-04|Maths: Surface Areas & Volumes
+12-05|Science: Electricity PYQs
+12-06|SST: Economics revision + weekly test
+12-07|Maths: Statistics
+12-08|Science: Magnetic Effects
+12-09|SST: Globalisation
+12-10|Maths: Probability
+12-11|Science: Our Environment
+12-12|Full Maths paper
+12-13|Full Science paper + analysis
+12-14|SST History full revision
+12-15|SST Geography full revision
+12-16|Political Science full revision
+12-17|Economics full revision
+12-18|English full paper
+12-19|Hindi full paper
+12-20|SST full paper + analysis
+12-21|Maths complete revision
+12-22|Science complete revision
+12-23|SST complete revision
+12-24|English literature revision
+12-25|Hindi literature revision
+12-26|Maths PYQ paper
+12-27|Science PYQ paper
+12-28|SST PYQ paper
+12-29|English PYQs
+12-30|Hindi PYQs
+12-31|Full progress audit
+01-01|Maths: Number Systems + Algebra
+01-02|Science: Chemistry
+01-03|SST: History
+01-04|Maths: Geometry
+01-05|Science: Biology
+01-06|SST: Geography
+01-07|English complete revision
+01-08|Hindi complete revision
+01-09|Maths full sample paper
+01-10|Maths correction + mistake notebook
+01-11|Science full sample paper
+01-12|Science correction
+01-13|SST full sample paper
+01-14|SST correction
+01-15|English full paper
+01-16|English correction + writing
+01-17|Hindi full paper + correction
+01-18|Maths weak chapters
+01-19|Science weak chapters
+01-20|SST weak chapters
+01-21|English weak areas
+01-22|Hindi weak areas
+01-23|Maths full paper #2
+01-24|Science full paper #2
+01-25|SST full paper #2
+01-26|Maths mistakes + PYQs
+01-27|Science mistakes + PYQs
+01-28|SST mistakes + maps
+01-29|English + Hindi writing
+01-30|Mixed rapid revision
+01-31|Final full syllabus audit`.split('\n').forEach(l=>{const a=l.split('|');PL[a[0]]=a.slice(1)});
+const webPh=()=>{const d=today().slice(5);return d<'02-01'?'Portfolio + 2 mini projects':d<'10-03'?'30 min maintenance, or pause in board-heavy weeks':d<'10-11'?'HTML':d<'10-26'?'CSS':d<'11-16'?'CSS project + JavaScript basics':'JavaScript: DOM, events, forms'};
+
+const def=()=>({exam:'',name:'Student',theme:'system',target:95,nid:20,notif:false,notified:'',sub:'Maths',lvl:'Normal',done:{},rev:{},ch:{},mist:[],tests:[],fit:{},
+chaps:JSON.parse(JSON.stringify(CH)),
+tasks:[[1,'06:00','Morning revision (yesterday\'s formulas and definitions)',1],[3,'17:50','Fitness (~45 min)',2],[5,'20:45','Web Development (90 min)',2],[6,'22:15','Mistake log + plan tomorrow',2]].map(a=>({id:a[0],t:a[1],title:a[2],pri:a[3],rec:1})),
+web:{done:{},mins:0,sess:[],code:null},pyq:{}});
+let S=def();
+try{const r=JSON.parse(localStorage.getItem('bc1'));if(r&&typeof r==='object')S=Object.assign(S,r)}catch(e){}
+if(!S.v2){S.tasks=def().tasks;S.v2=1}
+function save(){try{localStorage.setItem('bc1',JSON.stringify(S))}catch(e){toast('Could not save. Browser storage may be full or blocked.')}}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2600)}
+
+/* ===== helpers ===== */
+const todayTasks=()=>S.tasks.filter(t=>t.rec||t.date===today()).concat(dayPlan().map((x,i)=>({id:i?'ps':'pm',t:i?'19:00':'16:20',title:x,pri:1,v:1}))).sort((a,b)=>a.t.localeCompare(b.t));
+const isDone=id=>(S.done[today()]||[]).includes(String(id));
+function acad(){let s=0,n=0;for(const k in S.chaps)S.chaps[k].forEach((_,i)=>{s+=(S.ch[k+i]||0)/4;n++});return n?Math.round(s/n*100):0}
+function subPct(k){const c=S.chaps[k];return c.length?Math.round(c.reduce((a,_,i)=>a+(S.ch[k+i]||0)/4,0)/c.length*100):0}
+const webPct=()=>Math.round(Object.keys(S.web.done).length/30*100);
+const webDay=()=>{for(let i=0;i<30;i++)if(!S.web.done[i])return i;return 29};
+function revQueue(){const q=[];for(const k in S.rev){const r=S.rev[k];if(r.n<4&&addDays(r.start,OFF[r.n])<=today())q.push({k,r})}return q}
+function name(k){const m=k.match(/^(\D+)(\d+)$/);return m?[m[1],S.chaps[m[1]]?.[+m[2]]||'']:[k,'']}
+const ring=(p,l)=>`<div style="text-align:center"><svg width="86" height="86" viewBox="0 0 36 36" role="img" aria-label="${l} ${p}%"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--bd)" stroke-width="3"/><circle cx="18" cy="18" r="15.5" fill="none" class="rg" stroke="var(--ac)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${p*0.974} 100" transform="rotate(-90 18 18)"/><text x="18" y="20.5" text-anchor="middle" font-size="8" fill="currentColor" font-weight="700">${p}%</text></svg><div class="mu">${l}</div></div>`;
+const empty=(t,s)=>`<div class="card" style="text-align:center"><h3>${t}</h3><p class="mu">${s}</p></div>`;
+const phaseIdx=()=>({9:0,10:1,11:2,0:3,1:4})[new Date().getMonth()]??0;
+
+/* ===== pages ===== */
+const pages={
+home(){const h=new Date().getHours(),g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+const tt=todayTasks(),d=tt.filter(t=>isDone(t.id)).length,p1=tt.filter(t=>t.pri==1&&!isDone(t.id)),nx=p1[0]||tt.find(t=>!isDone(t.id));
+const m=MOT[Math.floor(Date.now()/864e5)%MOT.length],f=S.fit[today()];
+return`<h1>${g}, ${esc(S.name)}.</h1><p class="mu">${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})} · Target ${S.target}%+ · ${m}</p>
+${h>=21&&p1.length?`<div class="note">Your planned study for today isn't complete yet. Review the ${p1.length} remaining priority task(s) below.</div>`:''}
+<div class="card hero"><h2>Next priority</h2><p style="font-size:1.1rem;margin:0">${nx?esc(nx.title):'All planned tasks done. Rest well.'}</p></div>
+<div class="card row sp" style="justify-content:space-around">${ring(acad(),'Academics')}${ring(webPct(),'Web Dev')}${ring(tt.length?Math.round(d/tt.length*100):0,'Today')}</div>
+<div class="grid"><div class="card"><h3>Today's tasks</h3><div class="big">${d}/${tt.length}</div></div>
+<div class="card"><h3>Revision queue</h3><div class="big">${revQueue().length}</div><button class="b" onclick="go('rev')">Open</button></div>
+<div class="card"><h3>Web Dev</h3><div class="big">Day ${webDay()+1}</div><div class="mu">${(S.web.mins/60).toFixed(1)} h coded</div></div>
+<div class="card"><h3>Fitness</h3><div class="big" style="font-size:1.6rem">${f?'Completed':'Not yet'}</div></div>
+<div class="card"><h3>Mistakes to review</h3><div class="big">${S.mist.filter(x=>!x.fixed).length}</div><button class="b" onclick="go('mist')">Open</button></div></div>
+<div class="card" style="margin-top:14px"><h2>Roadmap to the boards</h2><div class="tl">${PH.map((x,i)=>`<div class="${i==phaseIdx()?'on':''}"><b>${x[0]}</b><br>${x[1]}<br>${x[2]}</div>`).join('')}</div></div>`},
+
+plan(){const tt=todayTasks(),und=tt.filter(t=>!isDone(t.id)).length;
+return`<h1>Today's plan</h1>${planInfo()}${new Date().getMonth()==1?'<div class="note">Boards month: give 70–80% of academic time to the subject whose paper is nearest, and shift dates once the CBSE date sheet is out.</div>':''}${und>10?'<div class="note">Today\'s workload is too high. Move lower-priority tasks to another day.</div>':''}
+<div class="card">${tt.map(t=>`<div class="item ${isDone(t.id)?'done':''}"><input type="checkbox" aria-label="Done: ${esc(t.title)}" ${isDone(t.id)?'checked':''} onchange="tog('${t.id}')">${t.v?`<span class="chip">${fmt(t.t)}</span>`:`<button class="chip" onclick="edTime(${t.id})" aria-label="Edit time">${fmt(t.t)}</button>`}<div style="flex:1" class="t">${esc(t.title)}</div><span class="pri p${t.pri}">P${t.pri}</span>${t.v?'':`<button class="chip" onclick="delT(${t.id})" aria-label="Delete task">✕</button>`}</div>`).join('')||empty('No tasks','Add your first task below.')}</div>
+<p class="mu">School 7:30 AM–3:00 PM · rest 3:00–4:20 PM · main block 4:20 PM · second block 7:00 PM · dinner 8:15 PM · sleep 10:30 PM. If a day is heavy, slide the task to the next free slot.</p>
+<div class="card"><h2>Add a task</h2><label for="a-t">Task</label><input id="a-t" maxlength="80"><div class="grid"><div><label for="a-h">Time</label><input id="a-h" type="time" value="19:00"></div><div><label for="a-p">Priority</label><select id="a-p"><option value="1">P1 Must do</option><option value="2" selected>P2 Important</option><option value="3">P3 If time remains</option></select></div></div><label class="row"><input type="checkbox" id="a-r" style="width:22px;min-height:22px"> Repeat every day</label><br><button class="b p" onclick="addT()">Add task</button></div>`},
+
+subj(){const k=S.sub,c=S.chaps[k];
+return`<h1>Academics</h1><div class="row" style="margin-bottom:12px">${Object.keys(S.chaps).map(x=>`<button class="chip ${x==k?'on':''}" onclick="S.sub='${x}';save();render()">${x} ${subPct(x)}%</button>`).join('')}</div>
+<div class="card"><div class="bar"><i style="width:${subPct(k)}%"></i></div><p class="mu">Learn → NCERT → Practice → PYQ → Test → Analyse → Revise → Master</p>
+${c.map((n,i)=>`<div class="item"><div style="flex:1">${esc(n)}</div><select style="width:140px" aria-label="Status: ${esc(n)}" onchange="setSt('${k}',${i},+this.value)">${ST.map((s,j)=>`<option value="${j}" ${(S.ch[k+i]||0)==j?'selected':''}>${s}</option>`).join('')}</select></div>`).join('')}
+<div class="row" style="margin-top:12px"><input id="nc" placeholder="Add a chapter" style="flex:1"><button class="b p" onclick="addCh()">Add</button></div></div>`},
+
+web(){const d=webDay(),L=DAYS[d];
+return`<h1>Web Development</h1><p class="mu">Current track: ${webPh()}</p>
+<div class="card"><h2>Day ${d+1}: ${esc(L[0])}</h2><p><b>Task:</b> ${esc(L[1])}</p><p class="mu">Session plan (90 min): 10 revise · 25 learn · 35 code along · 15 challenge · 5 notes</p>
+<div class="big" id="tm">90:00</div><div class="mu" id="ph"></div>
+<div class="row" style="margin:10px 0"><button class="b p" onclick="tStart()">Start / Resume</button><button class="b" onclick="tPause()">Pause</button><button class="b" onclick="tFin()">Finish session</button><button class="b" onclick="go('code')">Open playground</button></div>
+<label class="row"><input type="checkbox" style="width:22px;min-height:22px" ${S.web.done[d]?'checked':''} onchange="webDone(${d},this.checked)"> Mark lesson complete</label></div>
+<div class="grid"><div class="card"><h3>Total coding time</h3><div class="big">${(S.web.mins/60).toFixed(1)} h</div><div class="mu">${S.web.sess.length} sessions</div></div>
+<div class="card"><h3>Explain this</h3><div class="row">${Object.keys(GL).map(k=>`<button class="chip" onclick="expl('${k}')">${k}</button>`).join('')}</div><p id="ex" class="mu">Tap a word.</p></div></div>
+<div class="card" style="margin-top:14px"><h2>First 30 days</h2>${DAYS.map((x,i)=>`<div class="item ${S.web.done[i]?'done':''}"><input type="checkbox" aria-label="Day ${i+1}" ${S.web.done[i]?'checked':''} onchange="webDone(${i},this.checked)"><div class="t">Day ${i+1}: ${esc(x[0])}</div></div>`).join('')}</div>`},
+
+code(){const c=S.web.code||starter();
+return`<h1>Code playground</h1><div class="row" style="margin-bottom:10px">${['h','c','j'].map((x,i)=>`<button class="chip ${i==0?'on':''}" data-k="${x}" onclick="cTab('${x}')">${['HTML','CSS','JavaScript'][i]}</button>`).join('')}</div>
+<div class="card"><textarea id="cd" aria-label="Code editor" spellcheck="false" oninput="cEd()"></textarea>
+<div class="row" style="margin:10px 0"><button class="b p" onclick="runCode()">Run</button><button class="b" onclick="cReset()">Reset</button></div>
+<div id="er" class="mu" role="alert"></div><iframe id="fr" title="Preview" sandbox="allow-scripts"></iframe>
+<p class="mu">Your code runs in an isolated frame, so it cannot touch this app.</p></div>`},
+
+mist(){const C=['Concept','Calculation','Silly','Question interpretation','Time management','Presentation','Forgotten formula/fact'];
+return`<h1>Mistake notebook</h1><div class="card"><div class="grid"><div><label for="m-s">Subject</label><select id="m-s">${Object.keys(S.chaps).map(x=>`<option>${x}</option>`).join('')}</select></div><div><label for="m-c">Type</label><select id="m-c">${C.map(x=>`<option>${x}</option>`).join('')}</select></div></div>
+<label for="m-q">Question</label><input id="m-q"><label for="m-w">What went wrong</label><input id="m-w"><label for="m-m">Correct method</label><input id="m-m"><br><button class="b p" onclick="addM()">Add mistake</button></div>
+${S.mist.length?S.mist.map((x,i)=>`<div class="card ${x.fixed?'done':''}"><div class="row sp"><b>${esc(x.s)} · ${esc(x.c)}</b><span class="mu">${x.d}</span></div><p class="t">${esc(x.q)}</p><p class="mu">Went wrong: ${esc(x.w)}<br>Correct: ${esc(x.m)}</p><button class="b" onclick="S.mist[${i}].fixed=!S.mist[${i}].fixed;save();render()">${x.fixed?'Review again':'Mark fixed'}</button> <button class="b" onclick="S.mist.splice(${i},1);save();render()">Delete</button></div>`).join(''):empty('No mistakes logged','Every mistake you write down is one you are less likely to repeat.')}`},
+
+test(){const T=S.tests,avg=T.length?Math.round(T.reduce((a,x)=>a+x.p,0)/T.length):0;
+let svg='';if(T.length>1){const pts=T.map((x,i)=>`${10+i*(280/(T.length-1))},${110-x.p*1}`).join(' ');svg=`<svg viewBox="0 0 300 120" width="100%" role="img" aria-label="Score trend"><line x1="0" x2="300" y1="${110-S.target}" y2="${110-S.target}" stroke="var(--wn)" stroke-dasharray="4"/><polyline points="${pts}" fill="none" stroke="var(--ac)" stroke-width="2.5"/></svg>`}
+return`<h1>Tests &amp; PYQs</h1><div class="grid"><div class="card"><h3>Target</h3><div class="big">${S.target}%+</div></div><div class="card"><h3>Current performance</h3><div class="big">${T.length?avg+'%':'–'}</div><div class="mu">${T.length} tests</div></div></div>${svg?`<div class="card" style="margin-top:14px">${svg}<div class="mu">Dashed line = target</div></div>`:''}
+<div class="card" style="margin-top:14px"><div class="grid"><div><label for="t-n">Test name</label><input id="t-n"></div><div><label for="t-s">Subject</label><select id="t-s">${Object.keys(S.chaps).map(x=>`<option>${x}</option>`).join('')}</select></div><div><label for="t-g">Marks obtained</label><input id="t-g" type="number" min="0"></div><div><label for="t-x">Maximum marks</label><input id="t-x" type="number" min="1" value="80"></div></div><label for="t-a">Next action</label><input id="t-a"><br><button class="b p" onclick="addTest()">Save test</button></div>
+${T.map((x,i)=>`<div class="card row sp"><div><b>${esc(x.n)}</b> · ${esc(x.s)}<div class="mu">${x.d} · ${x.g}/${x.x} · ${esc(x.a||'')}</div></div><div><b>${x.p}%</b> <button class="chip" onclick="S.tests.splice(${i},1);save();render()" aria-label="Delete test">✕</button></div></div>`).join('')}`},
+
+rev(){const q=revQueue();
+return`<h1>Revision queue</h1><p class="mu">Set a chapter to Practiced or higher in Academics and reviews are scheduled after 1, 3, 7 and 14 days. Review 5 is before the exam.</p>
+${q.length?q.map(({k,r})=>{const[s,c]=name(k);return`<div class="card row sp"><div><b>${esc(c)}</b><div class="mu">${s} · Review ${r.n+1} of 4</div></div><button class="b p" onclick="S.rev['${k}'].n++;save();render()">Reviewed</button></div>`}).join(''):empty('Nothing due today','Finished chapters will appear here when a review is due.')}`},
+
+fit(){const log=S.fit,n=Object.keys(log).length;
+return`<h1>Fitness</h1><p><b>Today:</b> ${FW[new Date().getDay()]}</p><p class="mu">For strength, stamina and energy. Take 1–2 rest days a week.</p><div class="row" style="margin-bottom:12px">${Object.keys(FIT).map(x=>`<button class="chip ${x==S.lvl?'on':''}" onclick="S.lvl='${x}';save();render()">${x}</button>`).join('')}</div>
+<div class="card"><ol>${FIT[S.lvl].map(x=>`<li>${x}</li>`).join('')}</ol><label class="row"><input type="checkbox" style="width:22px;min-height:22px" ${log[today()]?'checked':''} onchange="fitT(this.checked)"> Done today</label></div><div class="card"><h3>Active days</h3><div class="big">${n}</div></div>`},
+
+pyq(){const k=S.sub,c=S.chaps[k],PS=['Not attempted','Attempted','Correct','Needs revision'];
+return`<h1>PYQ tracker</h1><div class="row" style="margin-bottom:12px">${Object.keys(S.chaps).map(x=>`<button class="chip ${x==k?'on':''}" onclick="S.sub='${x}';save();render()">${x}</button>`).join('')}</div><div class="card">${c.map((n,i)=>{const o=S.pyq[k+i]||{a:0,c:0,s:0};return`<div style="padding:10px 0;border-bottom:1px solid var(--bd)"><div class="row sp"><b>${esc(n)}</b><span class="mu">${o.a?Math.round(o.c/o.a*100)+'%':'–'}</span></div><div class="row"><label style="margin:0">Attempted <input type="number" min="0" style="width:80px" value="${o.a}" onchange="pq('${k}',${i},'a',Math.max(0,+this.value||0))"></label><label style="margin:0">Correct <input type="number" min="0" style="width:80px" value="${o.c}" onchange="pq('${k}',${i},'c',Math.max(0,+this.value||0))"></label><select style="width:150px" aria-label="PYQ status: ${esc(n)}" onchange="pq('${k}',${i},'s',+this.value)">${PS.map((x,j)=>`<option value="${j}" ${o.s==j?'selected':''}>${x}</option>`).join('')}</select></div></div>`}).join('')}</div>`},
+
+ana(){const D=[...Array(7)].map((_,i)=>addDays(today(),-i)),td=D.reduce((a,d)=>a+(S.done[d]||[]).length,0),fd=D.filter(d=>S.fit[d]).length,wm=S.web.sess.filter(x=>x.d>=D[6]).reduce((a,x)=>a+x.m,0),tc=S.tests.filter(x=>x.d>=D[6]).length,pa=Object.values(S.pyq),A=pa.reduce((a,x)=>a+x.a,0),C=pa.reduce((a,x)=>a+x.c,0),mfx=S.mist.length?Math.round(S.mist.filter(x=>x.fixed).length/S.mist.length*100):0;
+const R=[['Tasks done (7 days)',td,'—'],['Fitness days',fd,'about 6, with rest'],['Web Dev minutes',wm,'630 normally'],['Timed tests',tc,'1–2'],['PYQ accuracy',A?Math.round(C/A*100)+'%':'–','3+ PYQ sessions'],['Mistakes fixed',mfx+'%','100%']],wk=[];
+for(const k in S.chaps)S.chaps[k].forEach((n,i)=>{const o=S.pyq[k+i];if(o&&o.a>=3&&o.c/o.a<.6)wk.push(k+': '+n+' ('+Math.round(o.c/o.a*100)+'%)')});
+return`<h1>Analytics</h1><div class="card"><h2>Weekly scoreboard (last 7 days)</h2>${R.map(x=>`<div class="item"><div style="flex:1">${x[0]}</div><b>${x[1]}</b><span class="mu" style="width:120px;text-align:right">Target ${x[2]}</span></div>`).join('')}<p class="mu">Also aim for: Maths 4–5, Science 4–5, SST 3–4, English 2–3, Hindi 2–3 sessions, and about 8 hours of sleep.</p></div>
+<div class="card"><h2>Syllabus progress</h2>${Object.keys(S.chaps).map(k=>`<div style="margin:10px 0"><div class="row sp"><span>${k}</span><span class="mu">${subPct(k)}%</span></div><div class="bar"><i style="width:${subPct(k)}%"></i></div></div>`).join('')}</div>
+<div class="grid"><div class="card"><h3>Web Dev</h3><div class="big">${(S.web.mins/60).toFixed(1)} h</div><div class="mu">${Object.keys(S.web.done).length}/30 lessons</div></div><div class="card"><h3>Tests</h3><div class="big">${S.tests.length?Math.round(S.tests.reduce((a,x)=>a+x.p,0)/S.tests.length)+'%':'–'}</div><div class="mu">Target ${S.target}%+</div></div></div>
+<div class="card" style="margin-top:14px"><h2>Weak chapters (PYQ under 60%)</h2>${wk.length?wk.map(x=>`<div class="item">${esc(x)}</div>`).join(''):'<p class="mu">None yet. Log PYQs with at least 3 attempts per chapter.</p>'}</div>`},
+
+mat(){const O=Object.keys(S.chaps).concat('Web Dev').map(x=>`<option>${x}</option>`).join('');
+return`<h1>Study materials</h1><div class="card"><div class="grid"><div><label for="f-s">Subject</label><select id="f-s">${O}</select></div><div><label for="f-t">Type</label><select id="f-t">${MT.map(x=>`<option>${x}</option>`).join('')}</select></div></div><label for="f-g">Tags (comma separated)</label><input id="f-g"><label for="f-f">File</label><input id="f-f" type="file" multiple><br><button class="b p" onclick="matAdd()">Add</button><p class="mu">Files stay on this device, in this browser only. They are not in the cloud and are not part of the JSON backup.</p></div>
+<div class="card"><div class="grid"><input id="f-q" placeholder="Search name or tag" aria-label="Search" oninput="mq=this.value;matList()" value="${esc(mq)}"><select aria-label="Filter by subject" onchange="mf=this.value;matList()"><option value="">All subjects</option>${O}</select></div></div><div id="ml"></div>`},
+
+set(){return`<h1>Settings</h1><div class="card"><label for="s-n">Your name</label><input id="s-n" value="${esc(S.name)}" onchange="S.name=this.value||'Student';save()"><label for="s-t">Target %</label><input id="s-t" type="number" min="33" max="100" value="${S.target}" onchange="S.target=+this.value||95;save()"><label for="s-e">Board exam date (from the CBSE date sheet)</label><input id="s-e" type="date" value="${S.exam||''}" onchange="S.exam=this.value;save();toast('Saved. The last 7 days before the exam will show the exam-week plan.')"><label for="s-h">Theme</label><select id="s-h" onchange="S.theme=this.value;save();applyTheme()">${['system','light','dark'].map(x=>`<option ${S.theme==x?'selected':''}>${x}</option>`).join('')}</select></div>
+<div class="card"><h2>Reminders</h2><p class="mu">At 9 PM, if priority tasks are incomplete, you get a gentle reminder. The browser can only show it while this page is open. Reliable background reminders need a service worker with push and a small server (see below).</p><button class="b p" onclick="enNotif()">${S.notif?'Reminders on (tap to turn off)':'Enable study reminder'}</button></div>
+<div class="card"><h2>Your data</h2><p class="mu">Saved only in this browser on this device. Back it up regularly.</p><div class="row"><button class="b" onclick="exp()">Export JSON</button><label class="b" style="display:inline-flex;align-items:center;margin:0;cursor:pointer;color:var(--tx)">Import JSON<input type="file" accept=".json" hidden onchange="imp(this.files[0])"></label><button class="b" onclick="if(confirm('Delete all local data?')){localStorage.removeItem('bc1');S=def();save();render()}">Reset</button></div></div>
+<div class="card"><h2>Google sign-in</h2><p class="mu">Not connected. Real Google sign-in needs a Google Cloud OAuth client ID, your site listed as an authorised origin, and a backend that verifies the Google token and keeps the session. No fake login is included.</p><button class="b" disabled>Continue with Google (needs setup)</button></div>`}
+};
+const NAV=[['home','🏠','Home'],['plan','🗓️','Plan'],['subj','📚','Academics'],['pyq','✅','PYQs'],['web','💻','Web Dev'],['code','⌨️','Code'],['mat','🗂️','Materials'],['mist','📝','Mistakes'],['test','📊','Tests'],['rev','🔁','Revision'],['fit','🏃','Fitness'],['ana','📈','Analytics'],['set','⚙️','Settings']];
+let page='home';
+function go(p){page=p;render();const v=$('#v');v.classList.remove('pg');void v.offsetWidth;v.classList.add('pg');scrollTo(0,0)}
+function render(){const y=scrollY;$('#v').classList.remove('pg');$('#nav').innerHTML=NAV.map(n=>`<button class="${n[0]==page?'on':''}" onclick="go('${n[0]}')" ${n[0]==page?'aria-current="page"':''}><span aria-hidden="true">${n[1]}</span>${n[2]}</button>`).join('');
+$('#v').innerHTML=pages[page]();scrollTo(0,y);{const a=$('#nav .on');if(a)a.scrollIntoView({inline:'center',block:'nearest'})}if(page=='web')tUpd();if(page=='mat')matList();if(page=='code'){cTab('h');runCode()}}
+function applyTheme(){S.theme=='system'?document.documentElement.removeAttribute('data-theme'):document.documentElement.setAttribute('data-theme',S.theme)}
+
+/* ===== actions ===== */
+function tog(id){id=String(id);const a=S.done[today()]||(S.done[today()]=[]);const i=a.indexOf(id);i<0?a.push(id):a.splice(i,1);save();if(page=='plan'){const c=document.querySelector('[onchange="tog(\''+id+'\')"]');if(c){c.closest('.item').classList.toggle('done',c.checked);return}}render()}
+function edTime(id){const t=S.tasks.find(x=>x.id==id),v=prompt('New time, for example 6:30 PM',fmt(t.t));if(!v)return;const m=v.trim().match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/i);if(!m||+m[1]<1||+m[1]>12||+m[2]>59)return toast('Use the format 6:30 PM');const h=+m[1]%12+(m[3].toLowerCase()=='pm'?12:0);t.t=String(h).padStart(2,'0')+':'+m[2];save();render()}
+function delT(id){S.tasks=S.tasks.filter(x=>x.id!=id);save();render()}
+function addT(){const t=$('#a-t').value.trim();if(!t)return toast('Write the task first.');S.tasks.push({id:++S.nid,t:$('#a-h').value||'19:00',title:t,pri:+$('#a-p').value,rec:$('#a-r').checked?1:0,date:today()});save();render()}
+function setSt(k,i,v){S.ch[k+i]=v;if(v>=2&&!S.rev[k+i])S.rev[k+i]={start:today(),n:0};save();render()}
+function addCh(){const v=$('#nc').value.trim();if(!v)return toast('Type a chapter name.');S.chaps[S.sub].push(v);save();render()}
+function webDone(i,c){c?S.web.done[i]=1:delete S.web.done[i];save();render()}
+function expl(k){$('#ex').textContent=k+': '+GL[k]}
+function addM(){const q=$('#m-q').value.trim();if(!q)return toast('Add the question first.');S.mist.unshift({s:$('#m-s').value,c:$('#m-c').value,q,w:$('#m-w').value,m:$('#m-m').value,d:today(),fixed:false});save();render()}
+function addTest(){const n=$('#t-n').value.trim(),g=+$('#t-g').value,x=+$('#t-x').value;if(!n||isNaN(g)||!x||g>x||g<0)return toast('Check the name and marks. Marks obtained cannot be above the maximum.');S.tests.push({n,s:$('#t-s').value,g,x,p:Math.round(g/x*100),a:$('#t-a').value,d:today()});save();render()}
+function fitT(c){c?S.fit[today()]=S.lvl:delete S.fit[today()];save();render()}
+function exp(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='boardcraft-backup-'+today()+'.json';a.click()}
+function imp(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!o.chaps||!o.tasks)throw 0;S=Object.assign(def(),o);save();applyTheme();render();$('#v').classList.add('pg');toast('Data imported.')}catch(e){toast('That file is not a BOARDCRAFT backup.')}};r.readAsText(f)}
+function enNotif(){if(S.notif){S.notif=false;save();render();return}
+if(!('Notification' in window))return toast('This browser does not support notifications.');
+Notification.requestPermission().then(p=>{if(p=='granted'){S.notif=true;save();render();toast('Reminder on while this page is open.')}else toast('Permission was not granted. You can allow it in browser site settings.')})}
+setInterval(()=>{if(!S.notif||!('Notification' in window)||Notification.permission!='granted')return;const n=new Date();if(n.getHours()>=21&&S.notified!=today()&&todayTasks().some(t=>t.pri==1&&!isDone(t.id))){S.notified=today();save();new Notification('BOARDCRAFT',{body:'Your planned study for today isn\'t complete yet. Review the remaining priority tasks.'})}},60000);
+
+
+function planInfo(){const i=phaseIdx(),pl=dayPlan().join(' '),n=dExam();
+return`<div class="card"><div class="mu">${PH[i][0]} · ${PH[i][1]}</div><b>${PG[i]}</b>${n!=null&&n>=0?`<div class="mu">${n} days to boards</div>`:''}${i==0?'<div class="mu" style="margin-top:6px">By 31 Oct: Maths Real Numbers to AP done · Science Chemistry done, Life Processes started · SST History + Geography foundation · English and Hindi maintained.</div>':''}</div>`+(/test|paper/i.test(pl)?'<div class="note">'+(new Date().getDay()==0?'Sunday test: 60–90 min, then 30 min mistake analysis. ':'')+'After every paper: Wrong → Why wrong → Correct method → Similar question.</div>':'')}
+function pq(k,i,f,v){const o=S.pyq[k+i]||(S.pyq[k+i]={a:0,c:0,s:0});o[f]=v;if(f=='c'&&o.c>o.a)o.a=o.c;if(f=='a'&&o.c>o.a)o.c=o.a;save();render()}
+let mq='',mf='';
+const DB=new Promise((res,rej)=>{try{const q=indexedDB.open('bc',1);q.onupgradeneeded=()=>q.result.createObjectStore('f',{keyPath:'id'});q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)}catch(e){rej(e)}});DB.catch(()=>{});
+const tx=async(m,fn)=>{const d=await DB;return new Promise((res,rej)=>{const t=d.transaction('f',m),r=fn(t.objectStore('f'));t.oncomplete=()=>res(r&&r.result);t.onerror=()=>rej(t.error)})};
+async function matList(){const el=$('#ml');if(!el)return;try{let a=await tx('readonly',s=>s.getAll());const q=mq.toLowerCase();a=a.filter(x=>(!mf||x.sub==mf)&&(!q||(x.name+' '+x.tags).toLowerCase().includes(q))).sort((a,b)=>b.fav-a.fav||b.date.localeCompare(a.date));
+el.innerHTML=a.length?a.map(x=>`<div class="card"><div class="row sp"><b>${esc(x.name)}</b><button class="chip" onclick="matMod('${x.id}',y=>y.fav=!y.fav)" aria-label="Favourite">${x.fav?'★':'☆'}</button></div><div class="mu">${esc(x.sub)} · ${esc(x.type)} · ${Math.round(x.size/1024)} KB · ${esc(x.tags)}</div><div class="row" style="margin-top:8px"><button class="chip" onclick="matOpen('${x.id}')">Open / download</button><button class="chip" onclick="matRen('${x.id}')">Rename</button><button class="chip" onclick="matDel('${x.id}')">Delete</button></div></div>`).join(''):empty('No study material yet','Add your first note or PDF to build your personal library.')}catch(e){el.innerHTML=empty('Storage unavailable','This browser blocked local file storage.')}}
+async function matAdd(){const fs=[...$('#f-f').files];if(!fs.length)return toast('Choose a file first.');try{for(const f of fs)await tx('readwrite',s=>s.put({id:'m'+Date.now()+Math.random().toString(36).slice(2,6),name:f.name,sub:$('#f-s').value,type:$('#f-t').value,tags:$('#f-g').value,fav:false,date:today(),size:f.size,blob:f}));toast('Added.');$('#f-f').value='';matList()}catch(e){toast('Could not store the file. Storage may be full.')}}
+async function matMod(id,fn){try{const x=await tx('readonly',s=>s.get(id));if(!x)return;fn(x);await tx('readwrite',s=>s.put(x));matList()}catch(e){toast('Could not update.')}}
+function matRen(id){const n=prompt('New name');if(n)matMod(id,x=>x.name=n.slice(0,80))}
+async function matDel(id){if(!confirm('Delete this file?'))return;try{await tx('readwrite',s=>s.delete(id));matList()}catch(e){toast('Could not delete.')}}
+async function matOpen(id){try{const x=await tx('readonly',s=>s.get(id));if(!x)return;const a=document.createElement('a');a.href=URL.createObjectURL(x.blob);a.download=x.name;a.click()}catch(e){toast('Could not open the file.')}}
+/* ===== web dev timer ===== */
+let T={left:5400,run:false,id:null};
+function tUpd(){const e=$('#tm');if(!e)return;const m=Math.floor(T.left/60),s=T.left%60;e.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');const el=(5400-T.left)/60,P=[[10,'Revise'],[35,'Learn the concept'],[70,'Code along'],[85,'Independent challenge'],[90,'Notes + plan tomorrow']];$('#ph').textContent=(P.find(p=>el<p[0])||P[4])[1]+(T.run?'':' (paused)')}
+function tStart(){if(T.run)return;T.run=true;T.id=setInterval(()=>{T.left--;tUpd();if(T.left<=0)tFin()},1000);tUpd()}
+function tPause(){T.run=false;clearInterval(T.id);tUpd()}
+function tFin(){tPause();const m=Math.round((5400-T.left)/60);if(m>0){S.web.mins+=m;S.web.sess.push({d:today(),m});save();toast(m+' minutes added.')}T.left=5400;render()}
+
+/* ===== playground ===== */
+const starter=()=>({h:'<h1>Hello!</h1>\n<button id="b">Click me</button>',c:'h1{color:teal}',j:'document.getElementById("b").onclick=()=>alert("It works!");'});
+let ck='h';
+function cTab(k){ck=k;if(!S.web.code)S.web.code=starter();$('#cd').value=S.web.code[k];document.querySelectorAll('[data-k]').forEach(b=>b.classList.toggle('on',b.dataset.k==k))}
+let ct;function cEd(){S.web.code[ck]=$('#cd').value;clearTimeout(ct);ct=setTimeout(save,500)}
+function cReset(){S.web.code=starter();cTab(ck);runCode()}
+function runCode(){const c=S.web.code||starter();$('#er').textContent='';$('#fr').srcdoc='<style>'+c.c+'</style>'+c.h+'<script>onerror=function(m){parent.postMessage({bcErr:String(m)},"*")};'+c.j+'<\/script>'}
+addEventListener('message',e=>{if(!e.data||!e.data.bcErr||!$('#er'))return;const m=e.data.bcErr;
+$('#er').textContent=/not defined/.test(m)?'JavaScript cannot find this name. Check that you spelled it correctly and created it first.':/Unexpected|Invalid or unexpected/.test(m)?'Syntax error: a bracket, quote or comma is probably missing or extra near your last edit.':/null|undefined/.test(m)?'Your code is using something that does not exist. Check the id or class in your HTML matches your JavaScript.':'Something went wrong in your JavaScript: '+m});
+
+applyTheme();render();
+</script>
+</body>
+</html>
